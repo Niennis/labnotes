@@ -1,0 +1,100 @@
+{
+  "editor.minimap.enabled": false,
+  "liveshare.presence": false,
+  "editor.tabSize": 2,
+  "[javascript]": {
+      "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "workbench.colorTheme": "Slack Theme Aubergine Dark",
+  "editor.tokenColorCustomizations": {
+      "textMateRules": [
+          {
+              "scope": [
+                  "comment.block",
+                  "punctuation.definition.comment.end",
+                  "punctuation.definition.comment.begin"
+              ],
+              "settings": {
+                  "foreground": "#77c5bbd2",
+              }
+          },
+          {
+              "scope": [
+                  "comment.block.documentation",
+                  "punctuation.definition.comment.begin.documentation",
+                  "punctuation.definition.comment.end.documentation"
+              ],
+              "settings": {
+                  "foreground": "#77c5bbd2",
+              }
+          },
+          {
+              "scope":["comment.line", "punctuation.definition.comment"],
+              "settings": {
+                  "foreground": "#77c5bbd2",
+              }
+          },
+          {
+              "scope": 	"comment.line.double-slash",
+              "settings": { "foreground": "#77c5bbd2" }
+          },
+          {
+              "scope":	"variable.other.constant",
+              "settings": { "foreground": "#d8638a" }
+          },
+          {
+              "scope": 	"entity.name.function",
+              "settings": { 
+                  "foreground": "#33aca2"
+              }
+          },
+          {
+              "scope": "punctuation",
+              "settings": {
+                  "fontStyle": "italic",
+                  "foreground": "#5dc2db"
+              }
+          },
+          {
+              "scope": 	"constant.language.boolean",
+              "settings": 
+              { "foreground": "#d8638a" }
+          }
+        ]
+  },
+  "workbench.colorCustomizations": {
+  
+      "selection.background": "#429287",
+      "editor.background": "#3d2b1a",
+      "sideBar.background": "#4b3624",
+      "editor.selectionBackground": "#429287",
+      "activityBar.background": "#429287",
+      "activityBar.foreground": "#ffffff",
+      "sideBarSectionHeader.background": "#3d2b1a",
+      "tab.activeBackground": "#286159",
+      "tab.inactiveBackground": "#429287",
+      "tab.inactiveForeground": "#4b3624",
+      "editorGroupHeader.tabsBackground": "#429287",
+      "editorLineNumber.activeForeground": "#429287",
+      "editor.selectionHighlightBackground": "#286159",
+      "editor.lineHighlightBackground": "#5c2f1e",
+      "dropdown.background": "#3d2b1a",
+      "dropdown.listBackground": "#4b3624",
+      "editorHoverWidget.background": "#3d2b1a",
+      "input.background": "#286159",
+  "editorGroup.emptyBackground": "#286159",
+  },
+  "terminal.integrated.rendererType": "dom",
+  "liveSassCompile.settings.formats": [
+      {
+          "format": "compressed",
+          "extensionName": ".css",
+          "savePath": "/css"
+      }
+  ],
+  "liveSassCompile.settings.generateMap": false,
+  "liveSassCompile.settings.autoprefix": [],
+  "vscode-pets.petColor": "black",
+  "vscode-pets.petSize": "large",
+  "javascript.updateImportsOnFileMove.enabled": "always"
+}
