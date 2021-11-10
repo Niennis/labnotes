@@ -23,7 +23,6 @@ const Home = () => {
         notes.push({ ...doc.data(), id: doc.id });
       });
       setData(notes)
-      // console.log("Current notes: ", notes);
     });
   }
 

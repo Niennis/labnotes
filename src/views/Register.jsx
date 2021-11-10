@@ -2,21 +2,17 @@ import React, { useState, useEffect } from 'react';
 // import { app } from '../services/firebase.js';
 import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
-export const Login = () => {
+const Register = () => {
   const [mail, setMail] = useState('');
   const [pass, setPass] = useState('');
+  // const [user, setUser] = useState('');
 
   useEffect(() => {
     const auth = getAuth();
     const user = auth.currentUser;
-    // onAuthStateChanged(auth, (currentUser) => {
-    //   if (currentUser) {
-    //     window.location.href = 'http://localhost:3000/home'                                                                                                                           
-    //   } else {
-    //     window.location.href = 'http://localhost:3000'
-    //     console.log('No hay nadie conectado');
-    //   }
-    // })
+    // setUser(user.email)
+    // onAuthStateChanged(auth, (currentUser) => { })
+  
   }, []);
 
   const submit = () => {
@@ -41,7 +37,9 @@ export const Login = () => {
       <input type="email" name='email' id="email" onChange={(e) => setMail(e.target.value)} /> <br />
       <label htmlFor="pass">Pass </label>
       <input type="password" name="pass" id="pass" onChange={(e) => setPass(e.target.value)} /> <br />
-      <button type="button" onClick={submit}>Iniciar sesión</button>
+      <button type="button" onClick={submit}>Registrar usuario</button>
     </div>
   );
 }
+
+export { Register };

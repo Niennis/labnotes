@@ -30,18 +30,20 @@ export const NoteForm = ({ createNewNote }) => {
 
   useEffect(() => {
     if (createNewNote.currentId === '') {
-      setNewNote({ content: '',
-    uid: '',
-    date: '' })
+      setNewNote({
+        content: '',
+        uid: '',
+        date: ''
+      })
     } else {
       getNoteById(createNewNote.currentId)
     }
   }, [createNewNote.currentId])
   // se especifica en el [] el currentId o no???
 
-  const getNoteById =  async (id) => {
+  const getNoteById = async (id) => {
     const noteRef = await getDoc(doc(db, "notes", id))
-    setNewNote({...noteRef.data()})
+    setNewNote({ ...noteRef.data() })
   }
 
 
@@ -55,10 +57,10 @@ export const NoteForm = ({ createNewNote }) => {
         value={newNote.content} />
 
       <button onClick={handleSubmit}>
-        {createNewNote.currentId === '' 
+        {createNewNote.currentId === ''
           ? `Crear nota `
           : `Editar`}
-        
+
       </button>
     </div>
   )
