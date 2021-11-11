@@ -15,7 +15,7 @@ const Login = () => {
     // onAuthStateChanged(auth, (currentUser) => { })
     if (user) {
       window.location.href = 'http://localhost:3000/home'
-    } 
+    }
   }, []);
 
   const submit = () => {
@@ -25,6 +25,8 @@ const Login = () => {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log(user);
+        window.location.href = 'http://localhost:3000/home'
+
       })
       .catch((error) => {
         const errorCode = error.code;

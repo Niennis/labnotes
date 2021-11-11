@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import { getAuth, signOut } from 'firebase/auth';
+import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -13,22 +13,37 @@ import './App.css';
 
 const App = () => {
 
-  const [user, setUser] = useState('')
+  const [user, setUser] = useState(false)
 
   useEffect(() => {
-    // const auth = getAuth();
-    // setUser(auth.currentUser.email);
+    isUser()
+    console.log('useeffect', user);
+  }, [])
 
-  })
+  const isUser = () => {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const uid = user.uid;
+        setUser(true);
+        console.log('isuser', user.email, uid);// ...
+      } else {
+        setUser(false);
+      }
+    })
+  }
 
-
-  /*   const logout = () => {
-      signOut(auth).then(() => {
-        // Sign-out successful.
+  const logout = () => {
+    const auth = getAuth();
+    signOut(auth)
+      .then(() => {
+        setUser(false);
+        console.log('Salió exitosamente');
+        window.location.href = 'http://localhost:3000'
       }).catch((error) => {
         // An error happened.
       });
-    } */
+  }
 
   return (
     <>
@@ -37,40 +52,48 @@ const App = () => {
           <header className="container header">
             <nav>
               <ul>
-                <li>
-                  <Link to="/">Login</Link>
-                </li>
-                <li>
-                  <Link to="/register">Register</Link>
-                </li>
+
                 {user ?
                   <>
                     <li>
                       <Link to="/home">Home</Link>
                     </li>
                     <li>
-                      <Link to="/" >Logout</Link>
+                      <Link to="/" onClick={logout}>Logout</Link>
                     </li>
                   </>
-                  : ''}
+                  : <><li>
+                    <Link to="/">Login</Link>
+                  </li>
+                    <li>
+                      <Link to="/register">Register</Link>
+                    </li>
+                  </>}
               </ul>
             </nav>
           </header>
           <main className="container main">
             <Switch>
-
-              <Route path="/home">
+              {/* {user ?
+                <> */}
+              <Route exact path="/home">
                 <Home />
               </Route>
-
-              <Route path="/register">
+              {/*     <Route exact path="/">
+                    <Login />
+                  </Route> */}
+              {/*    </>
+                :
+                <> */}
+              <Route exact path="/register">
                 <Register />
               </Route>
 
-              <Route path="/">
+              <Route exact path="/">
                 <Login />
               </Route>
-
+              {/*   </>
+              } */}
             </Switch>
           </main>
         </div>

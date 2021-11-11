@@ -12,7 +12,7 @@ const Register = () => {
     const user = auth.currentUser;
     // setUser(user.email)
     // onAuthStateChanged(auth, (currentUser) => { })
-  
+
   }, []);
 
   const submit = () => {
@@ -21,6 +21,8 @@ const Register = () => {
     createUserWithEmailAndPassword(auth, mail, pass)
       .then((userCredential) => {
         const user = userCredential.user;
+        window.location.href = 'http://localhost:3000/home'
+
         console.log(user);
       })
       .catch((error) => {
