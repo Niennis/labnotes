@@ -1,50 +1,67 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-// import { app } from '../services/firebase.js';
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
-const Login = () => {
+import Form from '../components/Form';
+
+import './login.css';
+
+const Login = ({ setUser }) => {
   const [mail, setMail] = useState('');
   const [pass, setPass] = useState('');
-  // const [user, setUser] = useState('');
-
-  useEffect(() => {
-    const auth = getAuth();
-    const user = auth.currentUser;
-    // setUser(user.email)
-    // onAuthStateChanged(auth, (currentUser) => { })
-    if (user) {
-      window.location.href = 'http://localhost:3000/home'
-    }
-  }, []);
+  const [error, setError] = useState('')
+  let navigate = useNavigate();
 
   const submit = () => {
-    console.log(mail, pass);
     const auth = getAuth();
     signInWithEmailAndPassword(auth, mail, pass)
       .then((userCredential) => {
         const user = userCredential.user;
         console.log(user);
-        window.location.href = 'http://localhost:3000/home'
-
+        navigate('/home')
+        setUser(user)
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+       
+        switch (errorCode) {
+          case 'auth/invalid-email':
+            setError('Email inválido')
+            break;
+          case 'auth/wrong-password':
+            setError('Contraseña incorrecta')
+            break;
+          case 'auth/user-not-found':
+            setError('Usuario no encontrado')
+            break;
+          default:
+            setError('Hubo algún problema')
+            break;
+        }
         console.log(`${errorCode}: ${errorMessage}`);
       });
   }
 
-  return (
-    <div>
+  const handleEmail = (e) => {
+    setMail(e.target.value)
+  }
 
-      <label htmlFor="email">Mail </label>
-      <input type="email" name='email' id="email" onChange={(e) => setMail(e.target.value)} /> <br />
-      <label htmlFor="pass">Pass </label>
-      <input type="password" name="pass" id="pass" onChange={(e) => setPass(e.target.value)} /> <br />
-      <button type="button" onClick={submit}>Iniciar sesión</button>
+  const handlePassword = (e) => {
+    setPass(e.target.value)
+  }
+
+  return (
+    <>
+      <Form
+        handleEmail={handleEmail}
+        handlePassword={handlePassword}
+        submit={submit}
+        error={error}
+        innerText={'Iniciar sesión'}
+      />
       <p>No tienes cuenta? Crea una <Link to="/register">aquí</Link></p>
-    </div>
+    </>
   );
 }
 

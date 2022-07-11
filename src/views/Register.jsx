@@ -1,46 +1,64 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 // import { app } from '../services/firebase.js';
-import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { useNavigate } from 'react-router-dom';
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
-const Register = () => {
+import Form from '../components/Form';
+
+const Register = ({ setUser }) => {
   const [mail, setMail] = useState('');
   const [pass, setPass] = useState('');
-  // const [user, setUser] = useState('');
-
-  useEffect(() => {
-    const auth = getAuth();
-    const user = auth.currentUser;
-    // setUser(user.email)
-    // onAuthStateChanged(auth, (currentUser) => { })
-
-  }, []);
+  const [error, setError] = useState('')
+  const navigate = useNavigate()
 
   const submit = () => {
-    console.log(mail, pass);
     const auth = getAuth();
     createUserWithEmailAndPassword(auth, mail, pass)
       .then((userCredential) => {
         const user = userCredential.user;
-        window.location.href = 'http://localhost:3000/home'
-
-        console.log(user);
+        navigate('/home')
+        setUser(user)
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+
+        switch (errorCode) {
+          case 'auth/invalid-email':
+            setError('Email inválido')
+            break;
+          case 'auth/weak-password':
+            setError('Contraseña debe tener al menos 6 caracteres')
+            break;
+          case 'auth/email-already-in-use':
+            setError('Usuario ya registrado')
+            break;
+          default:
+            setError('Hubo algún problema')
+            break;
+        }
         console.log(`${errorCode}: ${errorMessage}`);
       });
   }
 
-  return (
-    <div>
+  const handleEmail = (e) => {
+    setMail(e.target.value)
+  }
 
-      <label htmlFor="email">Mail </label>
-      <input type="email" name='email' id="email" onChange={(e) => setMail(e.target.value)} /> <br />
-      <label htmlFor="pass">Pass </label>
-      <input type="password" name="pass" id="pass" onChange={(e) => setPass(e.target.value)} /> <br />
-      <button type="button" onClick={submit}>Registrar usuario</button>
-    </div>
+  const handlePassword = (e) => {
+    setPass(e.target.value)
+  }
+
+  return (
+    <>
+      <Form
+        handleEmail={handleEmail}
+        handlePassword={handlePassword}
+        submit={submit}
+        error={error}
+        innerText={'Registrar usuario'}
+      />
+    </>
   );
 }
 

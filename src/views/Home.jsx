@@ -1,35 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../utils/firebase.js';
-import { collection, addDoc, onSnapshot, query, doc, deleteDoc, setDoc } from 'firebase/firestore';
+import { collection, addDoc, onSnapshot, query, doc, deleteDoc, setDoc, updateDoc,orderBy } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 
-import { Note } from '../components/Notes.jsx';
+import { Note } from '../components/Note.jsx';
 import { NoteForm } from './NoteForm.jsx';
+import AddCircleTwoToneIcon from '@mui/icons-material/AddCircleTwoTone';
 
-const Home = () => {
+const Home = ({ user }) => {
 
   const [data, setData] = useState([]);
   const [currentId, setCurrentId] = useState('')
+  const [modal, setModal] = useState(false);
 
   useEffect(() => {
-    fetchData();
-  }, [])
 
-  const fetchData = () => {
-    const q = query(collection(db, "notes"));
-    onSnapshot(q, (querySnapshot) => {
-      const notes = [];
-      querySnapshot.forEach((doc) => {
-        notes.push({ ...doc.data(), id: doc.id });
+    const fetchData = () => {
+      const q = query(collection(db, "notes"), orderBy('date', 'asc'));
+      onSnapshot(q, (querySnapshot) => {
+        const notes = [];
+        querySnapshot.forEach((doc) => {
+          if (doc.data().uid === user.uid) {
+            notes.push({ ...doc.data(), id: doc.id });
+          }
+        });
+
+        if (notes.length > 0) {
+          setData(notes)
+        } else {
+          setData([])
+        }
       });
-      setData(notes)
-    });
-  }
+    }
+
+    fetchData();
+  }, [user.uid])
+
 
   const createNewNote = async (item) => {
+
     if (currentId === '') {
       try {
-        const docRef = await addDoc(collection(db, "notes"), item);
+        await addDoc(collection(db, "notes"), item);
         toast('Nueva nota agregada', {
           position: "bottom-center",
           autoClose: 2500,
@@ -39,7 +51,7 @@ const Home = () => {
           draggable: true,
           progress: undefined,
         })
-        console.log("Document written with ID: ", docRef.id);
+        handleCloseModal()
       } catch (e) {
         console.error("Error adding document: ", e);
       }
@@ -47,15 +59,16 @@ const Home = () => {
       try {
         await setDoc(doc(db, "notes", currentId), item);
         editNote('')
-      } catch(e){
+        handleCloseModal()
+      } catch (e) {
         console.error('Error al editar: ', e);
       }
     }
   }
 
   const editNote = (id) => {
-    console.log('home', id);
     setCurrentId(id)
+    handleOpenModal()
   }
 
   const deleteNote = async (id) => {
@@ -74,26 +87,68 @@ const Home = () => {
     }
   }
 
+  const handleOpenModal = () => {
+    setModal(true)
+  }
+
+  const handleCloseModal = () => {
+    setModal(false)
+    setCurrentId('')
+  }
+
+  const handleId = (id) => {
+    setCurrentId(id)
+  }
+
+  const changeColor = async (item) => {
+    await updateDoc(doc(db, "notes", currentId), item);
+  }
+
+  const handleColor = (item) => {
+    if(item.color === 'nota'){
+      return '#b0b993'
+    } else if( item.color === 'tareas'){
+      return '#7f9651'
+    } else if (item.color === 'compras'){
+      return '#b3c879'
+    } else {
+      return '#bdd3c0'
+    }
+  }
+
   return (
-    <>
-      <h2>Mis notas</h2>
+    <section className='main-notes'>
+      <div className='add-container btn'>
+        <h2 className=''>Mis notas</h2>
+        <AddCircleTwoToneIcon
+          sx={{ color: '#7B9676', fontSize: '30px', margin: '5px' }}
+          onClick={handleOpenModal}
+        />
+      </div>
 
-      <NoteForm
-        createNewNote={{ createNewNote, currentId, data }}
-      />
-
-      <section className="notes-container">
+      {modal &&
+        <NoteForm 
+          createNewNote={{ createNewNote, currentId, data }} 
+          handleModal={handleCloseModal}
+        />
+      }
+      <div className="notes-container">
         {data.length === 0 ? 'No has agregado notas...' :
           data.map((item) => {
-            return <Note key={item.id}
-            uid={item.uid}
-              content={item.content}
-              editNote={() => { editNote(item.id) }}
-              deleteNote={() => { deleteNote(item.id) }} />
+            return (
+              <Note key={item.id}
+                title={item.title}
+                content={item.content}
+                colour={handleColor(item)}
+                editNote={() => { editNote(item.id) }}
+                deleteNote={() => { deleteNote(item.id) }}
+                changeTheColor={changeColor}
+                handleId={() => {handleId(item.id)}}
+              />)
           })
         }
-      </section>
-    </>
+      </div>
+    </section>
   );
 }
 

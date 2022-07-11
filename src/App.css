@@ -1,32 +1,90 @@
-.App {
-  text-align: center;
+:root {
+  --semi-transparent-green: #e8e9d298;
+  --semi-transparent-white: #f5f5f5a5;
+  --light-green: #e8e9d2;
+  --font-green: #7B9676;
 }
 
-.container {
-  background-color: #282c34;
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  background-image: url('./img/leaves04.jpg');
+  background-size: 200vh;
+  background-position-x: left;
+}
+
+.App {
+  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* justify-content: center; */
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.header {
-  height: 10vh;
-}
-
-.main {
-  min-height: 90vh;
-  justify-content: center;
-}
-
-.App a {
-  color: #61dafb;
 }
 
 .App a:visited {
+  color: #7B9676;
+}
+
+ input:focus::placeholder{
+  color:lightgray;
+}
+
+textarea:focus::placeholder{
+  color:lightgray;
+} 
+
+.header {
+  height: 10vh;
+  display: flex;
+  background-color: var(--semi-transparent-green);
+  justify-content: flex-end;
+  border-bottom: 2px solid white;
+  box-shadow: 10px 5px 5px #76777357;
+}
+
+.btn a {
+  color: var(--font-green);
+  font-weight: bold;
+  text-decoration: none;
+  font-size: large;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: 2px solid white;
+  border-radius: 5px;
+  margin: 5px;
+  min-width: 70px;
+  text-align: center;
+  color: var(--font-green);
+  font-size: large;
+  background-color: var(--semi-transparent-white);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   color: white;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--semi-transparent-green);
+  color: var(--font-green);
+  width: 90vw;
+  min-height: 75vh;
+  height: fit-content;
+  margin: 50px 50px -50px 50px;
+  padding-top: 20px;
+  /* justify-content: center; */
+  border: 2px solid whitesmoke;
+  border-radius: 5px;
 }
 
 ul {
@@ -34,8 +92,18 @@ ul {
   display: flex;
 }
 
-li {
+/* li {
   padding: 5px;
+} */
+
+.main-notes{
+  height: 100%;
+  width: 100%;
+}
+
+.add-container{
+  display: flex;
+  justify-content: space-between;
 }
 
 .notes-container {
@@ -44,21 +112,84 @@ li {
 }
 
 .notes {
-  border: 1px solid teal;
-  background-color: teal;
-  border-radius: 8px;
+  border: 1px solid #E6E8BA;
+  background-color: white;
+  border-radius: 3px;
   min-width: 15vw;
+  max-width: 20vw;
   min-height: 15vh;
   margin: 10px;
   padding: 10px;
   font-size: medium;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  border-inline: 5px dotted #E6E8BA;
+  color: #303428;
 }
 
 .create-note-container {
   border: 1px solid white;
   display: flex;
   flex-direction: column;
+}
+
+.notes h3{
+  height: 15%;
+  padding: 0;
+  margin: 0;
+  line-height: 15px;
+}
+
+.notes p{
+  height: 70%;
+}
+
+.notes span{
+  height: 15%;
+  color: #47562D;
+  display: flex;
+  justify-content: space-between;
+}
+
+.notes select{
+  position: relative;
+  top:10px;
+}
+
+.notes button{
+  background-color: transparent;
+  border: none;
+  color: #47562D;
+}
+
+.notes ul{
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  position: absolute;
+  margin-top: 2px;
+}
+
+.notes li{
+  min-width: 15vw;
+  max-width: 20vw;
+  margin-top: 2px ;
+  margin-left: -5px;
+  padding: 2px 2px 2px 5px;
+}
+
+
+@media screen and (max-width: 420px) {
+  .notes {
+    min-width: 31vw;
+    min-height: 20vh;
+  }
+
+  .main{
+    margin-top: 20px;
+  }
+
+  .header{
+    height: 70px;
+  }
 }

@@ -1,103 +1,80 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { ToastContainer } from 'react-toastify';
-import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
-
-import 'react-toastify/dist/ReactToastify.css';
 
 import { Login } from './views/Login.jsx';
 import { Register } from './views/Register.jsx';
 import Home from './views/Home.jsx';
+import Navbar from './components/Navbar.jsx';
 
+import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 
 const App = () => {
-
-  const [user, setUser] = useState(false)
+  const [user, setUser] = useState('')
+  const [state, setState] = useState({})
 
   useEffect(() => {
-    isUser()
-    console.log('useeffect', user);
+    handleCurrentUser()
+    return () => {
+      setState({})
+    }
   }, [])
 
-  const isUser = () => {
+  const handleCurrentUser = () => {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
         const uid = user.uid;
-        setUser(true);
+        setUser(user);
         console.log('isuser', user.email, uid);// ...
       } else {
-        setUser(false);
+        setUser('');
       }
     })
   }
 
-  const logout = () => {
-    const auth = getAuth();
-    signOut(auth)
-      .then(() => {
-        setUser(false);
-        console.log('Salió exitosamente');
-        window.location.href = 'http://localhost:3000'
-      }).catch((error) => {
-        // An error happened.
-      });
+  const logout = resp => {
+    console.log('resp', resp)
+    setUser(resp)
+  }
+
+  const handleUser = (obj) => {
+    console.log('muaha', obj)
+    setUser(obj)
   }
 
   return (
     <>
       <Router>
+        <Navbar setUser={logout} isUser={user} />
         <div className="App">
-          <header className="container header">
-            <nav>
-              <ul>
-
-                {user ?
-                  <>
-                    <li>
-                      <Link to="/home">Home</Link>
-                    </li>
-                    <li>
-                      <Link to="/" onClick={logout}>Logout</Link>
-                    </li>
-                  </>
-                  : <><li>
-                    <Link to="/">Login</Link>
-                  </li>
-                    <li>
-                      <Link to="/register">Register</Link>
-                    </li>
-                  </>}
-              </ul>
-            </nav>
-          </header>
           <main className="container main">
-            <Switch>
-              {/* {user ?
-                <> */}
-              <Route exact path="/home">
-                <Home />
-              </Route>
-              {/*     <Route exact path="/">
-                    <Login />
-                  </Route> */}
-              {/*    </>
-                :
-                <> */}
-              <Route exact path="/register">
-                <Register />
-              </Route>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  !user ? (
+                    <Login setUser={handleUser} />
+                  ) : (
+                    <Navigate replace to="/home" />
+                  )
+                }
+              />
+              <Route path="register" element={<Register />} />
+              <Route
+                path="home"
+                element={
+                  user ? (
+                    <Home user={user} />
+                  ) : (
+                    <Login setUser={handleUser} />
 
-              <Route exact path="/">
-                <Login />
-              </Route>
-              {/*   </>
-              } */}
-            </Switch>
+                  )} />
+            </Routes>
           </main>
         </div>
-
       </Router>
       <ToastContainer />
     </>

@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { db } from '../utils/firebase.js';
 import { doc, getDoc } from 'firebase/firestore';
 
-export const NoteForm = ({ createNewNote }) => {
+import './modal.css';
+
+export const NoteForm = ({ createNewNote, handleModal }) => {
 
   const initialStateValues = {
+    title: '',
     content: '',
     uid: '',
     date: ''
@@ -15,15 +18,21 @@ export const NoteForm = ({ createNewNote }) => {
 
   const auth = getAuth();
   onAuthStateChanged(auth, (currentUser) => {
-    setUser(currentUser.uid)
+    if(currentUser === null ) {
+      setUser('')
+    } else {
+      setUser(currentUser.uid)
+    }
   })
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewNote({ ...newNote, [name]: value, uid: user, date: new Date() })
-  }
+  const onChangeHandler = useCallback(
+    ({target:{name,value}}) => 
+      setNewNote(state => 
+        ({ ...state, [name]:value, uid: user, date: new Date() }), [])
+  );
 
   const handleSubmit = () => {
+    console.log(newNote)
     createNewNote.createNewNote(newNote)
     setNewNote({ ...initialStateValues })
   }
@@ -31,6 +40,7 @@ export const NoteForm = ({ createNewNote }) => {
   useEffect(() => {
     if (createNewNote.currentId === '') {
       setNewNote({
+        title: '',
         content: '',
         uid: '',
         date: ''
@@ -46,22 +56,69 @@ export const NoteForm = ({ createNewNote }) => {
     setNewNote({ ...noteRef.data() })
   }
 
+  const handleClose = () => {
+    setNewNote({ ...initialStateValues })
+  }
 
   return (
     <div className="create-note-container">
-      <input
-        type="text"
-        id="content"
-        name="content"
-        onChange={handleInputChange}
-        value={newNote.content} />
+      <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h2 className="modal-title" id="exampleModalLabel">Nueva nota</h2>
+            </div>
+            <div className="modal-body">
+              <form>
+                <div className="mb-3">
+                  <input
+                    type="text"
+                    className="form-control btn"
+                    id="recipient-name"
+                    onChange={onChangeHandler}
+                    value={newNote.title}
+                    name="title" 
+                    placeholder='Título'
+                  />
+                </div>
+                <div className="mb-3">
+                  <textarea
+                    className="form-control btn"
+                    id="message-text"
+                    onChange={onChangeHandler}
+                    value={newNote.content}
+                    name="content"
+                    placeholder='Contenido...'
+                    >
+                  </textarea>
+                </div>
+              </form>
+            </div>
+            <div className="modal-footer">
+              <button 
+                type="button" 
+                className="btn btn-secondary" 
+                data-bs-dismiss="modal" 
+                onClick={() => {handleModal(); handleClose()}}>Cancelar</button>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleSubmit}>
+                  Guardar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <button onClick={handleSubmit}>
-        {createNewNote.currentId === ''
-          ? `Crear nota `
-          : `Editar`}
 
-      </button>
+
+
+
+
+
+
+
     </div>
   )
 }
