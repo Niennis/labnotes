@@ -193,3 +193,9 @@ ul {
     height: 70px;
   }
 }
+
+@media screen and (orientation: landscape) {
+  body{
+    background-size: auto 100vw;
+  }
+}
