@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "bog003-labnotes"
-  }
+    "default": "knitsn-notes",
+    "knitsn-notes": "knitsn-notes"
+  },
+  "targets": {}
 }

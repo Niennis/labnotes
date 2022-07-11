@@ -20,13 +20,12 @@ import { getFirestore } from "firebase/firestore";
 // import firebase from "firebase/app";
 
 export const app = initializeApp({
-  "projectId": "bog003-labnotes",
-  "appId": "1:539672958699:web:a8d7ef42851bee82b250ae",
-  "storageBucket": "bog003-labnotes.appspot.com",
-  "locationId": "us-central",
-  "apiKey": "AIzaSyAxn3TGudq94CMBnwhnOgfU0QURbUppBZI",
-  "authDomain": "bog003-labnotes.firebaseapp.com",
-  "messagingSenderId": "539672958699"
+  apiKey: "AIzaSyCOnc9Q4rgF-n-lkhQfnmy5kQffWeR732k",
+  authDomain: "knitsn-notes.firebaseapp.com",
+  projectId: "knitsn-notes",
+  storageBucket: "knitsn-notes.appspot.com",
+  messagingSenderId: "448189322871",
+  appId: "1:448189322871:web:c7692035dfde0341461872"
 })
 
 export const db = getFirestore(app);
