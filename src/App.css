@@ -23,13 +23,15 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* ❌ elimina z-index si lo tienes añadido al final */
+  position: relative; /* esto está bien */
 }
 
 .App a:visited {
   color: #7B9676;
 }
 
- input:focus::placeholder{
+input:focus::placeholder{
   color:lightgray;
 }
 
@@ -65,6 +67,10 @@ textarea:focus::placeholder{
   background-color: var(--semi-transparent-white);
 }
 
+.form-control, .btn-opacity{
+  background-color: #d3d3d3;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -82,19 +88,16 @@ textarea:focus::placeholder{
   height: fit-content;
   margin: 50px 50px -50px 50px;
   padding-top: 20px;
-  /* justify-content: center; */
   border: 2px solid whitesmoke;
   border-radius: 5px;
+  position: relative; /* correcto */
+  /* z-index:1;  ⚠️ puede interferir con dropdown */
 }
 
 ul {
   list-style-type: none;
   display: flex;
 }
-
-/* li {
-  padding: 5px;
-} */
 
 .main-notes{
   height: 100%;
@@ -106,25 +109,38 @@ ul {
   justify-content: space-between;
 }
 
+/* GRID MEJORADO - Estilo Pinterest */
 .notes-container {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  gap: 15px;
+  padding: 15px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  overflow: visible; /* ✅ clave para que los hijos puedan salir */
 }
 
+/* NOTAS MEJORADAS - Altura variable como Pinterest */
 .notes {
   border: 1px solid #E6E8BA;
   background-color: white;
-  border-radius: 3px;
-  min-width: 15vw;
-  max-width: 20vw;
-  min-height: 15vh;
-  margin: 10px;
-  padding: 10px;
+  border-radius: 8px;
+  width: 100%;
+  padding: 15px;
   font-size: medium;
   display: flex;
   flex-direction: column;
-  border-inline: 5px dotted #E6E8BA;
+  justify-content: space-between;
   color: #303428;
+  height: auto;
+  min-height: 120px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: box-shadow 0.2s ease;
+  position: relative;   /* necesario */
+  overflow: visible;    /* ✅ deja que el dropdown se vea */
+  z-index: 1; /* ⚠️ Esto genera un stacking context y puede tapar el dropdown */
+}
+
+.notes:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
 .create-note-container {
@@ -134,68 +150,266 @@ ul {
 }
 
 .notes h3{
-  height: 15%;
   padding: 0;
-  margin: 0;
-  line-height: 15px;
+  margin: 0 0 10px 0;
+  word-wrap: break-word;
 }
 
-.notes p{
-  height: 70%;
+.notes p {
+  margin-bottom: 15px;
+  line-height: 1.4;
+  word-wrap: break-word;
+  flex-grow: 1;
 }
 
+/* SPAN DE CONTROLES MEJORADO */
 .notes span{
-  height: 15%;
+  height: auto;
   color: #47562D;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
+  gap: 8px;
+  align-items: center;
+  margin-top: auto;
 }
 
 .notes select{
   position: relative;
-  top:10px;
+  top: 10px;
 }
 
 .notes button{
   background-color: transparent;
   border: none;
   color: #47562D;
+  cursor: pointer;
+  padding: 2px;
 }
 
-.notes ul{
+.notes button:hover {
+  color: #303428;
+}
+
+/* DROPDOWN MEJORADO - Compatible con Bootstrap */
+.dropdown {
+  position: relative;
+}
+
+.notes .dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  z-index: 2000;  /* correcto si el padre no tiene z-index */
   display: flex;
   flex-direction: column;
   text-align: left;
-  position: absolute;
-  margin-top: 2px;
+  background: white;
+  border: 1px solid #E6E8BA;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  min-width: 140px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+body.modal-open .App > *:not(.create-note-container) {
+  visibility: hidden !important;
+}
+
+.notes-container {
+  display: grid;
+  gap: 15px;
+  padding: 15px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  overflow: visible; /* ✅ deja que los hijos se salgan */
+}
+
+/* Cuando el dropdown está cerrado (Bootstrap maneja esto) */
+.notes .dropdown-menu:not(.show) {
+  display: none;
 }
 
 .notes li{
-  min-width: 15vw;
-  max-width: 20vw;
-  margin-top: 2px ;
-  margin-left: -5px;
-  padding: 2px 2px 2px 5px;
+  width: 100%;
+  margin: 0;
+  padding: 8px 12px;
+  border-bottom: 1px solid #f0f0f0;
 }
 
+.notes li:last-child {
+  border-bottom: none;
+}
 
+.notes li:hover {
+  background-color: #f8f9fa;
+}
+
+.dropdown-item {
+  width: 100%;
+  text-align: left;
+  padding: 4px 8px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+/* RESPONSIVE DESIGN MEJORADO */
+
+/* Móviles pequeños */
 @media screen and (max-width: 420px) {
+  .notes-container {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 10px;
+  }
+  
   .notes {
-    min-width: 31vw;
-    min-height: 20vh;
+    min-height: 100px;
+    padding: 12px;
   }
 
   .main{
-    margin-top: 20px;
+    margin: 20px 10px -20px 10px;
+    width: 95vw;
   }
 
   .header{
     height: 70px;
   }
+  
+  .notes ul {
+    right: -10px;
+    min-width: 120px;
+  }
 }
 
-@media screen and (orientation: landscape) {
+/* Tablets pequeñas */
+@media screen and (min-width: 421px) and (max-width: 768px) {
+  .notes-container {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+  }
+  .notes{
+    width: auto;
+  }
+  #message-text {
+    width: 90%;
+    height: 80px;
+    padding: 0;
+    margin: 10px;
+  }
+}
+
+/* Tablets grandes */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .notes-container {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 15px;
+  }
+}
+
+/* Desktop */
+@media screen and (min-width: 1025px) {
+  .notes-container {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .notes {
+    max-width: 350px;
+  }
+}
+
+/* Pantallas muy grandes */
+@media screen and (min-width: 1400px) {
+  .notes-container {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+}
+
+/* Orientación landscape en móviles */
+@media screen and (orientation: landscape) and (max-width: 768px) {
   body{
     background-size: auto 100vw;
   }
+  
+  .notes-container {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+/* MODAL - Solución definitiva */
+.create-note-container {
+  position: fixed;
+  top: -1px;
+  /* left: 0; */
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1050;
+  /* Ocultar por defecto */
+  display: none;
+  margin: 0;
+  padding: 100px;
+}
+
+/* Mostrar solo cuando el modal esté abierto */
+.create-note-container.modal-open {
+  display: block;
+}
+
+.create-note-container .modal {
+  pointer-events: auto;
+  z-index: 1055;
+}
+
+.create-note-container .modal.show {
+  display: block !important;
+}
+
+.show {
+  display: block;
+}
+
+/* Backdrop manual - solo cuando está abierto */
+.create-note-container.modal-open::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  /* width: 100%; */
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1050;
+  pointer-events: auto;
+}
+
+/* SOLUCIÓN DRÁSTICA: Ocultar todo cuando el modal está abierto */
+body.modal-open .App > *:not(.create-note-container) {
+  visibility: hidden !important;
+}
+
+/* Asegurar que todo el contenido de la app esté debajo */
+.App {
+  position: relative;
+  z-index: 1;
+}
+
+.main {
+  position: relative;
+  z-index: 1;
+}
+
+.notes {
+  position: relative;
+  z-index: 1;
+}
+
+/* Dropdown normal */
+.notes .dropdown-menu {
+  z-index: 1000;
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../utils/firebase.js';
-import { collection, addDoc, onSnapshot, query, doc, deleteDoc, setDoc, updateDoc,orderBy } from 'firebase/firestore';
+import { collection, addDoc, onSnapshot, query, doc, deleteDoc, setDoc, updateDoc, orderBy } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 
 import { Note } from '../components/Note.jsx';
@@ -35,7 +35,6 @@ const Home = ({ user }) => {
 
     fetchData();
   }, [user.uid])
-
 
   const createNewNote = async (item) => {
 
@@ -100,16 +99,21 @@ const Home = ({ user }) => {
     setCurrentId(id)
   }
 
-  const changeColor = async (item) => {
-    await updateDoc(doc(db, "notes", currentId), item);
+  const changeColor = async (data) => {
+    // data debe contener { id: "abc123", color: "default" }
+    const { id, color } = data;
+
+    await updateDoc(doc(db, "notes", id), {
+      colour: color // Actualiza solo el campo colour
+    });
   }
 
   const handleColor = (item) => {
-    if(item.color === 'nota'){
+    if (item.color === 'nota') {
       return '#b0b993'
-    } else if( item.color === 'tareas'){
+    } else if (item.color === 'tareas') {
       return '#7f9651'
-    } else if (item.color === 'compras'){
+    } else if (item.color === 'compras') {
       return '#b3c879'
     } else {
       return '#bdd3c0'
@@ -117,38 +121,44 @@ const Home = ({ user }) => {
   }
 
   return (
-    <section className='main-notes'>
-      <div className='add-container btn'>
-        <h2 className=''>Mis notas</h2>
-        <AddCircleTwoToneIcon
-          sx={{ color: '#7B9676', fontSize: '30px', margin: '5px' }}
-          onClick={handleOpenModal}
-        />
-      </div>
+    <>
+      <section className='main-notes'>
+        <div className='add-container btn'>
+          <h2 className=''>Mis notas</h2>
+          <AddCircleTwoToneIcon
+            sx={{ color: '#7B9676', fontSize: '30px', margin: '5px' }}
+            onClick={handleOpenModal}
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+          />
+        </div>
 
-      {modal &&
-        <NoteForm 
-          createNewNote={{ createNewNote, currentId, data }} 
-          handleModal={handleCloseModal}
-        />
-      }
-      <div className="notes-container">
-        {data.length === 0 ? 'No has agregado notas...' :
-          data.map((item) => {
-            return (
-              <Note key={item.id}
-                title={item.title}
-                content={item.content}
-                colour={handleColor(item)}
-                editNote={() => { editNote(item.id) }}
-                deleteNote={() => { deleteNote(item.id) }}
-                changeTheColor={changeColor}
-                handleId={() => {handleId(item.id)}}
-              />)
-          })
-        }
-      </div>
-    </section>
+        <div className="notes-container">
+          {data.length === 0 ? 'No has agregado notas...' :
+            data.map((item) => {
+              return (
+                <Note
+                  key={item.id}
+                  id={item.id}
+                  title={item.title}
+                  content={item.content}
+                  colour={handleColor({ color: item.colour || 'default' })}
+                  editNote={editNote}
+                  deleteNote={deleteNote}
+                  changeTheColor={changeColor} // ← Pasa la función corregida
+                />)
+            })
+          }
+        </div>
+      </section>
+
+      {/* MODAL FUERA DEL CONTENEDOR PRINCIPAL */}
+      <NoteForm
+        createNewNote={{ createNewNote, currentId, data }}
+        handleModal={handleCloseModal}
+        isOpen={modal}
+      />
+    </>
   );
 }
 

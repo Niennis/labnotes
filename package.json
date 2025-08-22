@@ -7,18 +7,17 @@
     "@emotion/styled": "^11.3.0",
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.0.6",
-    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
-    "@wojtekmaj/enzyme-adapter-react-17": "^0.6.5",
     "bootstrap": "^5.2.0-beta1",
     "bootstrap-icons": "^1.8.3",
-    "firebase": "^9.1.2",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "firebase": "^11.3.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-router-dom": "^6.3.0",
-    "react-scripts": "^4.0.1",
-    "react-toastify": "^8.1.0",
+    "react-scripts": "^5.0.1",
+    "react-toastify": "^11.0.3",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
@@ -44,8 +43,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "enzyme": "^3.11.0"
   }
 }

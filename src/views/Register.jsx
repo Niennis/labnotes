@@ -48,6 +48,12 @@ const Register = ({ setUser }) => {
   const handlePassword = (e) => {
     setPass(e.target.value)
   }
+  
+  const handleKeyDown = (event) => {
+    if(event.key === 'Enter'){
+      return submit()
+    }
+  }
 
   return (
     <>
@@ -57,6 +63,7 @@ const Register = ({ setUser }) => {
         submit={submit}
         error={error}
         innerText={'Registrar usuario'}
+        handleKeyDown={handleKeyDown}
       />
     </>
   );

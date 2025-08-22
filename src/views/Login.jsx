@@ -51,6 +51,12 @@ const Login = ({ setUser }) => {
     setPass(e.target.value)
   }
 
+  const handleKeyDown = (event) => {
+    if(event.key === 'Enter'){
+      return submit()
+    }
+  }
+
   return (
     <>
       <Form
@@ -59,6 +65,7 @@ const Login = ({ setUser }) => {
         submit={submit}
         error={error}
         innerText={'Iniciar sesión'}
+        handleKeyDown={handleKeyDown}
       />
       <p>No tienes cuenta? Crea una <Link to="/register">aquí</Link></p>
     </>
