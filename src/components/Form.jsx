@@ -1,17 +1,47 @@
-import React from 'react'
+import React, { useState } from 'react'
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import TextField from '@mui/material/TextField'
+import InputAdornment from '@mui/material/InputAdornment'
+import IconButton from '@mui/material/IconButton'
 
-const Form = ({handlePassword, handleEmail, submit, handleKeyDown, error, innerText}) => {
-   return (
+const Form = ({ handlePassword, handleEmail, submit, handleKeyDown, error, innerText }) => {
+  const [showPassword, setShowPassword] = useState(false)
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(prev => !prev)
+  }
+
+  return (
     <form onKeyDown={handleKeyDown}>
-      <div className="input-group mb-3">
-        {/* <span className="input-group-text" id="basic-addon1">Mail </span> */}
-        <input type="text" className="form-control btn" placeholder="Ingresa tu mail..." aria-label="Email" aria-describedby="basic-addon1"
-          onChange={handleEmail} />
+      <div>
+        <TextField
+          style={{ marginBottom: '1rem', background: '#ffffff99' }}
+          fullWidth
+          type="email"
+          label="Correo"
+          variant="outlined"
+          onChange={handleEmail}
+        />
       </div>
-      <div className="input-group mb-3">
-        {/* <span className="input-group-text" id="basic-addon1">Pass </span> */}
-        <input type="text" className="form-control btn" placeholder="Ingresa tu password..." aria-label="Password" aria-describedby="basic-addon1"
-          onChange={handlePassword} />
+      <div>
+        <TextField
+          style={{ background: '#ffffff99' }}
+          fullWidth
+          type={showPassword ? "text" : "password"}
+          label="Contraseña"
+          variant="outlined"
+          onChange={handlePassword}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={togglePasswordVisibility} edge="end">
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
       </div>
       <div className='errorMessage'>{error}</div>
 
