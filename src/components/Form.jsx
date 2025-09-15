@@ -13,7 +13,7 @@ const Form = ({ handlePassword, handleEmail, submit, handleKeyDown, error, inner
   }
 
   return (
-    <form onKeyDown={handleKeyDown}>
+    <form onKeyDown={handleKeyDown} style={{margin: 'auto'}}>
       <div>
         <TextField
           style={{ marginBottom: '1rem', background: '#ffffff99' }}
