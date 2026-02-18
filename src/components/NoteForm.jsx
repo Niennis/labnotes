@@ -17,9 +17,9 @@ export const NoteForm = ({ createNewNote, handleModal, isOpen }) => {
 
   const colourOptions = [
     { value: 'default', color: '#bdd3c0', label: 'Por defecto' },
-    { value: 'nota',    color: '#b0b993', label: 'Nota' },
+    { value: 'nota', color: '#b0b993', label: 'Nota' },
     { value: 'compras', color: '#b3c879', label: 'Compras' },
-    { value: 'tareas',  color: '#7f9651', label: 'Tareas' },
+    { value: 'tareas', color: '#7f9651', label: 'Tareas' },
   ]
 
   const [newNote, setNewNote] = useState(initialStateValues);
@@ -36,8 +36,7 @@ export const NoteForm = ({ createNewNote, handleModal, isOpen }) => {
       }
     });
 
-    // Cleanup function para evitar memory leaks
-    return () => unsubscribe();
+    return () => typeof unsubscribe === 'function' && unsubscribe();
   }, []);
 
   // PROBLEMA 2 CORREGIDO: useCallback con dependencias correctas
@@ -61,8 +60,9 @@ export const NoteForm = ({ createNewNote, handleModal, isOpen }) => {
       setNewNote({
         title: '',
         content: '',
-        uid: user, // Mantener el uid del usuario actual
-        date: ''
+        uid: user,
+        date: '',
+        colour: 'default'
       });
     } else {
       getNoteById(createNewNote.currentId);

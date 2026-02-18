@@ -229,34 +229,6 @@ ul {
   cursor: pointer;
 }
 
-/* === Modal === */
-.create-note-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1050;
-}
-
-.create-note-container.modal-open {
-  display: flex;
-}
-
-.create-note-container .modal {
-  pointer-events: auto;
-  z-index: 1055;
-  position: relative;
-  width: 100%;
-}
-
-.create-note-container .modal.show {
-  display: block !important;
-}
 
 /* === Responsive Design === */
 

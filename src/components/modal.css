@@ -14,6 +14,23 @@
   align-items: center;
 }
 
+.create-note-container {
+  display: none; /* Hidden by default */
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.create-note-container.modal-open {
+  display: flex; /* Show as flex when open */
+}
+
 .modal-content {
   background-color: white;
   border-radius: 8px;
@@ -23,7 +40,7 @@
 .modal-dialog {
   width: 90%;
   max-width: 500px;
-  margin: 0 auto;
+  margin: 0; /* Remove default margins that might push it */
 }
 
 .modal-body .form-control {
