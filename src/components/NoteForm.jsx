@@ -11,8 +11,16 @@ export const NoteForm = ({ createNewNote, handleModal, isOpen }) => {
     title: '',
     content: '',
     uid: '',
-    date: ''
+    date: '',
+    colour: 'default'
   }
+
+  const colourOptions = [
+    { value: 'default', color: '#bdd3c0', label: 'Por defecto' },
+    { value: 'nota',    color: '#b0b993', label: 'Nota' },
+    { value: 'compras', color: '#b3c879', label: 'Compras' },
+    { value: 'tareas',  color: '#7f9651', label: 'Tareas' },
+  ]
 
   const [newNote, setNewNote] = useState(initialStateValues);
   const [user, setUser] = useState('');
@@ -77,8 +85,12 @@ export const NoteForm = ({ createNewNote, handleModal, isOpen }) => {
     }
   }
 
+  const handleColourChange = (value) => {
+    setNewNote(state => ({ ...state, colour: value, uid: user, date: new Date() }));
+  }
+
   const handleClose = () => {
-    setNewNote({ ...initialStateValues, uid: user }); // Mantener uid al cerrar
+    setNewNote({ ...initialStateValues, uid: user });
   }
 
   // PROBLEMA 7 CORREGIDO: Prevenir envío del formulario
@@ -143,6 +155,18 @@ export const NoteForm = ({ createNewNote, handleModal, isOpen }) => {
                     rows="4"
                     required
                   />
+                </div>
+                <div className="colour-picker">
+                  {colourOptions.map(({ value, color, label }) => (
+                    <button
+                      key={value}
+                      type="button"
+                      className={`colour-swatch ${newNote.colour === value ? 'selected' : ''}`}
+                      style={{ backgroundColor: color }}
+                      onClick={() => handleColourChange(value)}
+                      data-label={label}
+                    />
+                  ))}
                 </div>
               </form>
             </div>

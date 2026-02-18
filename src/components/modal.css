@@ -46,3 +46,50 @@ input.form-control {
   padding: 10px 12px !important;
   margin-bottom: 15px;
 }
+
+.colour-picker {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  padding: 4px 0 8px;
+}
+
+.colour-swatch {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.colour-swatch::after {
+  content: attr(data-label);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #303428;
+  color: white;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  padding: 3px 7px;
+  border-radius: 4px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.colour-swatch:hover::after {
+  opacity: 1;
+}
+
+.colour-swatch:hover {
+  transform: scale(1.15);
+}
+
+.colour-swatch.selected {
+  border-color: #303428;
+  transform: scale(1.2);
+}
