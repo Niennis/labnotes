@@ -1,3 +1,4 @@
+/* === Variables === */
 :root {
   --semi-transparent-green: #e8e9d298;
   --semi-transparent-white: #f5f5f5a5;
@@ -5,11 +6,14 @@
   --font-green: #7B9676;
 }
 
+/* === Reset === */
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
+/* === Base === */
 body {
   display: flex;
   flex-direction: column;
@@ -23,22 +27,19 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* ❌ elimina z-index si lo tienes añadido al final */
-  position: relative; /* esto está bien */
+  position: relative;
 }
 
 .App a:visited {
   color: #7B9676;
 }
 
-input:focus::placeholder{
-  color:lightgray;
+input:focus::placeholder,
+textarea:focus::placeholder {
+  color: lightgray;
 }
 
-textarea:focus::placeholder{
-  color:lightgray;
-} 
-
+/* === Header === */
 .header {
   height: 10vh;
   display: flex;
@@ -48,6 +49,7 @@ textarea:focus::placeholder{
   box-shadow: 10px 5px 5px #76777357;
 }
 
+/* === Buttons === */
 .btn a {
   color: var(--font-green);
   font-weight: bold;
@@ -67,10 +69,12 @@ textarea:focus::placeholder{
   background-color: var(--semi-transparent-white);
 }
 
-.form-control, .btn-opacity{
+.form-control,
+.btn-opacity {
   background-color: #d3d3d3;
 }
 
+/* === Layout === */
 .container {
   display: flex;
   flex-direction: column;
@@ -86,12 +90,11 @@ textarea:focus::placeholder{
   width: 90vw;
   min-height: 75vh;
   height: fit-content;
-  margin: 50px 50px -50px 50px;
+  margin: 50px 0 -50px;
   padding-top: 20px;
   border: 2px solid whitesmoke;
   border-radius: 5px;
-  position: relative; /* correcto */
-  /* z-index:1;  ⚠️ puede interferir con dropdown */
+  position: relative;
 }
 
 ul {
@@ -99,26 +102,25 @@ ul {
   display: flex;
 }
 
-.main-notes{
+.main-notes {
   height: 100%;
   width: 100%;
 }
 
-.add-container{
+.add-container {
   display: flex;
   justify-content: space-between;
 }
 
-/* GRID MEJORADO - Estilo Pinterest */
+/* === Notes Grid === */
 .notes-container {
   display: grid;
   gap: 15px;
   padding: 15px;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  overflow: visible; /* ✅ clave para que los hijos puedan salir */
 }
 
-/* NOTAS MEJORADAS - Altura variable como Pinterest */
+/* === Note Card === */
 .notes {
   border: 1px solid #E6E8BA;
   background-color: white;
@@ -132,24 +134,16 @@ ul {
   color: #303428;
   height: auto;
   min-height: 120px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.2s ease;
-  position: relative;   /* necesario */
-  overflow: visible;    /* ✅ deja que el dropdown se vea */
-  z-index: 1; /* ⚠️ Esto genera un stacking context y puede tapar el dropdown */
+  position: relative;
 }
 
 .notes:hover {
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.create-note-container {
-  border: 1px solid white;
-  display: flex;
-  flex-direction: column;
-}
-
-.notes h3{
+.notes h3 {
   padding: 0;
   margin: 0 0 10px 0;
   word-wrap: break-word;
@@ -162,8 +156,7 @@ ul {
   flex-grow: 1;
 }
 
-/* SPAN DE CONTROLES MEJORADO */
-.notes span{
+.notes span {
   height: auto;
   color: #47562D;
   display: flex;
@@ -173,12 +166,7 @@ ul {
   margin-top: auto;
 }
 
-.notes select{
-  position: relative;
-  top: 10px;
-}
-
-.notes button{
+.notes button {
   background-color: transparent;
   border: none;
   color: #47562D;
@@ -190,7 +178,7 @@ ul {
   color: #303428;
 }
 
-/* DROPDOWN MEJORADO - Compatible con Bootstrap */
+/* === Dropdown === */
 .dropdown {
   position: relative;
 }
@@ -199,38 +187,25 @@ ul {
   position: absolute;
   right: 0;
   top: 100%;
-  z-index: 2000;  /* correcto si el padre no tiene z-index */
+  z-index: 2000;
   display: flex;
   flex-direction: column;
   text-align: left;
   background: white;
   border: 1px solid #E6E8BA;
   border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   min-width: 140px;
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-body.modal-open .App > *:not(.create-note-container) {
-  visibility: hidden !important;
-}
-
-.notes-container {
-  display: grid;
-  gap: 15px;
-  padding: 15px;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  overflow: visible; /* ✅ deja que los hijos se salgan */
-}
-
-/* Cuando el dropdown está cerrado (Bootstrap maneja esto) */
 .notes .dropdown-menu:not(.show) {
   display: none;
 }
 
-.notes li{
+.notes li {
   width: 100%;
   margin: 0;
   padding: 8px 12px;
@@ -254,7 +229,36 @@ body.modal-open .App > *:not(.create-note-container) {
   cursor: pointer;
 }
 
-/* RESPONSIVE DESIGN MEJORADO */
+/* === Modal === */
+.create-note-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1050;
+}
+
+.create-note-container.modal-open {
+  display: flex;
+}
+
+.create-note-container .modal {
+  pointer-events: auto;
+  z-index: 1055;
+  position: relative;
+  width: 100%;
+}
+
+.create-note-container .modal.show {
+  display: block !important;
+}
+
+/* === Responsive Design === */
 
 /* Móviles pequeños */
 @media screen and (max-width: 420px) {
@@ -263,24 +267,19 @@ body.modal-open .App > *:not(.create-note-container) {
     gap: 10px;
     padding: 10px;
   }
-  
+
   .notes {
     min-height: 100px;
     padding: 12px;
   }
 
-  .main{
-    margin: 20px 10px -20px 10px;
+  .main {
+    margin: 20px 0 -20px;
     width: 95vw;
   }
 
-  .header{
+  .header {
     height: 70px;
-  }
-  
-  .notes ul {
-    right: -10px;
-    min-width: 120px;
   }
 }
 
@@ -290,14 +289,9 @@ body.modal-open .App > *:not(.create-note-container) {
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 12px;
   }
-  .notes{
+
+  .notes {
     width: auto;
-  }
-  #message-text {
-    width: 90%;
-    height: 80px;
-    padding: 0;
-    margin: 10px;
   }
 }
 
@@ -316,7 +310,7 @@ body.modal-open .App > *:not(.create-note-container) {
     gap: 20px;
     padding: 20px;
   }
-  
+
   .notes {
     max-width: 350px;
   }
@@ -333,83 +327,11 @@ body.modal-open .App > *:not(.create-note-container) {
 
 /* Orientación landscape en móviles */
 @media screen and (orientation: landscape) and (max-width: 768px) {
-  body{
+  body {
     background-size: auto 100vw;
   }
-  
+
   .notes-container {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
-}
-
-/* MODAL - Solución definitiva */
-.create-note-container {
-  position: fixed;
-  top: -1px;
-  /* left: 0; */
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1050;
-  /* Ocultar por defecto */
-  display: none;
-  margin: 0;
-  padding: 100px;
-}
-
-/* Mostrar solo cuando el modal esté abierto */
-.create-note-container.modal-open {
-  display: block;
-}
-
-.create-note-container .modal {
-  pointer-events: auto;
-  z-index: 1055;
-}
-
-.create-note-container .modal.show {
-  display: block !important;
-}
-
-.show {
-  display: block;
-}
-
-/* Backdrop manual - solo cuando está abierto */
-.create-note-container.modal-open::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  /* width: 100%; */
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1050;
-  pointer-events: auto;
-}
-
-/* SOLUCIÓN DRÁSTICA: Ocultar todo cuando el modal está abierto */
-body.modal-open .App > *:not(.create-note-container) {
-  visibility: hidden !important;
-}
-
-/* Asegurar que todo el contenido de la app esté debajo */
-.App {
-  position: relative;
-  z-index: 1;
-}
-
-.main {
-  position: relative;
-  z-index: 1;
-}
-
-.notes {
-  position: relative;
-  z-index: 1;
-}
-
-/* Dropdown normal */
-.notes .dropdown-menu {
-  z-index: 1000;
 }

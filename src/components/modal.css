@@ -1,0 +1,48 @@
+.modal-title {
+  color: #303428;
+  font-weight: bold;
+  width: 100%;
+  text-align: center;
+}
+
+.modal-header,
+.modal-footer {
+  border: none;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-dialog {
+  width: 90%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.modal-body .form-control {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white !important;
+  color: #333 !important;
+  font-size: 1rem;
+}
+
+textarea.form-control {
+  resize: none;
+  height: 150px;
+  padding: 12px !important;
+}
+
+input.form-control {
+  padding: 10px 12px !important;
+  margin-bottom: 15px;
+}

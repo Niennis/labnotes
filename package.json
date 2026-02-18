@@ -5,20 +5,20 @@
   "dependencies": {
     "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
-    "@mui/icons-material": "^5.8.4",
-    "@mui/material": "^5.0.6",
+    "@mui/icons-material": "^5.15.0",
+    "@mui/material": "^5.15.0",
     "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^11.2.7",
-    "@testing-library/user-event": "^12.8.3",
-    "bootstrap": "^5.2.0-beta1",
-    "bootstrap-icons": "^1.8.3",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.5.1",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
     "firebase": "^11.3.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.3.0",
+    "react-router-dom": "^6.28.0",
     "react-scripts": "^5.0.1",
     "react-toastify": "^11.0.3",
-    "web-vitals": "^1.1.2"
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",

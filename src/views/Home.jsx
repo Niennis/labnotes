@@ -4,7 +4,8 @@ import { collection, addDoc, onSnapshot, query, doc, deleteDoc, setDoc, updateDo
 import { toast } from 'react-toastify';
 
 import { Note } from '../components/Note.jsx';
-import { NoteForm } from './NoteForm.jsx';
+import ConfirmDialog from '../components/Confirm.jsx';
+import { NoteForm } from '../components/NoteForm.jsx';
 import AddCircleTwoToneIcon from '@mui/icons-material/AddCircleTwoTone';
 
 const Home = ({ user }) => {
@@ -12,6 +13,7 @@ const Home = ({ user }) => {
   const [data, setData] = useState([]);
   const [currentId, setCurrentId] = useState('')
   const [modal, setModal] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   useEffect(() => {
 
@@ -70,9 +72,10 @@ const Home = ({ user }) => {
     handleOpenModal()
   }
 
-  const deleteNote = async (id) => {
-    if (window.confirm('Estás seguro que deseas eliminar la nota?')) {
-      await deleteDoc(doc(db, "notes", id));
+  const deleteNote = async () => {
+    try {
+        // if (window.confirm('Estás seguro que deseas eliminar la nota?')) {
+      await deleteDoc(doc(db, "notes", currentId));
       toast.error('Nota eliminada exitosamente', {
         position: "bottom-center",
         autoClose: 2500,
@@ -83,7 +86,14 @@ const Home = ({ user }) => {
         progress: undefined,
         theme: 'dark'
       })
+    // }
+    } catch (error) {
+      console.log('Error al eliminar: ', error);
+    } finally {
+      setShowConfirm(false);
+      setCurrentId('')
     }
+  
   }
 
   const handleOpenModal = () => {
@@ -120,6 +130,11 @@ const Home = ({ user }) => {
     }
   }
 
+  const handleConfirm = (id) => {
+    setShowConfirm(true);
+    setCurrentId(id)
+  };
+
   return (
     <>
       <section className='main-notes'>
@@ -144,7 +159,7 @@ const Home = ({ user }) => {
                   content={item.content}
                   colour={handleColor({ color: item.colour || 'default' })}
                   editNote={editNote}
-                  deleteNote={deleteNote}
+                  deleteNote={handleConfirm}
                   changeTheColor={changeColor} // ← Pasa la función corregida
                 />)
             })
@@ -157,6 +172,11 @@ const Home = ({ user }) => {
         createNewNote={{ createNewNote, currentId, data }}
         handleModal={handleCloseModal}
         isOpen={modal}
+      />
+      <ConfirmDialog
+        open={showConfirm}
+        onclick={deleteNote}
+        onclose={() => setShowConfirm(false)}
       />
     </>
   );

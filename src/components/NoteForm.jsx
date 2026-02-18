@@ -13,7 +13,7 @@ export const NoteForm = ({ createNewNote, handleModal, isOpen }) => {
     uid: '',
     date: ''
   }
-  
+
   const [newNote, setNewNote] = useState(initialStateValues);
   const [user, setUser] = useState('');
 
@@ -21,7 +21,7 @@ export const NoteForm = ({ createNewNote, handleModal, isOpen }) => {
   useEffect(() => {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if(currentUser === null) {
+      if (currentUser === null) {
         setUser('')
       } else {
         setUser(currentUser.uid)
@@ -34,16 +34,15 @@ export const NoteForm = ({ createNewNote, handleModal, isOpen }) => {
 
   // PROBLEMA 2 CORREGIDO: useCallback con dependencias correctas
   const onChangeHandler = useCallback(
-    ({target: {name, value}}) => {
-      setNewNote(state => 
+    ({ target: { name, value } }) => {
+      setNewNote(state =>
         ({ ...state, [name]: value, uid: user, date: new Date() })
       );
     }, [user] // user debe estar en las dependencias
   );
 
   // PROBLEMA 3 CORREGIDO: handleSubmit mejorado
-   const handleSubmit = () => {
-    console.log(newNote)
+  const handleSubmit = () => {
     createNewNote.createNewNote(newNote)
     setNewNote({ ...initialStateValues })
   }
@@ -91,28 +90,27 @@ export const NoteForm = ({ createNewNote, handleModal, isOpen }) => {
   // Función para cerrar modal al hacer clic SOLO en el backdrop
   const handleBackdropClick = (e) => {
     // Solo cerrar si el clic fue en el contenedor, no en el modal
-    if (e.target.classList.contains('create-note-container') || 
-        e.target.classList.contains('modal')) {
+    if (e.target.classList.contains('create-note-container') ||
+      e.target.classList.contains('modal')) {
       handleClose();
       handleModal();
     }
   };
 
   return (
-    <div 
+    <div
       className={`create-note-container ${isOpen ? 'modal-open' : ''}`}
       onClick={handleBackdropClick}
     >
-      <div 
-        className={`modal fade ${isOpen ? 'show' : ''}`} 
-        id="exampleModal" 
-        tabIndex="-1" 
-        aria-labelledby="exampleModalLabel" 
+      <div
+        className={`modal fade ${isOpen ? 'show' : ''}`}
+        id="exampleModal"
+        tabIndex="-1"
+        aria-labelledby="exampleModalLabel"
         aria-hidden={!isOpen}
         style={{ display: isOpen ? 'block' : 'none' }}
         onClick={handleBackdropClick}
       >
-        <div className="modal-dialog" onClick={(e) => e.stopPropagation()}>
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
@@ -125,11 +123,11 @@ export const NoteForm = ({ createNewNote, handleModal, isOpen }) => {
                 <div className="mb-3">
                   <input
                     type="text"
-                    className="form-control btn"
+                    className="form-control"
                     id="recipient-name"
                     onChange={onChangeHandler}
                     value={newNote.title}
-                    name="title" 
+                    name="title"
                     placeholder='Título'
                     required
                   />
@@ -149,11 +147,11 @@ export const NoteForm = ({ createNewNote, handleModal, isOpen }) => {
               </form>
             </div>
             <div className="modal-footer">
-              <button 
-                type="button" 
-                className="btn btn-opacity" 
-                data-bs-dismiss="modal" 
-                onClick={() => {handleModal(); handleClose()}}
+              <button
+                type="button"
+                className="btn btn-opacity"
+                data-bs-dismiss="modal"
+                onClick={() => { handleModal(); handleClose() }}
               >
                 Cancelar
               </button>
@@ -169,7 +167,6 @@ export const NoteForm = ({ createNewNote, handleModal, isOpen }) => {
           </div>
         </div>
       </div>
-    </div>
     </div>
   )
 }
