@@ -77,7 +77,12 @@ export const Note = ({ title, content, editNote, deleteNote, id, colour, changeT
     <div className="notes" style={{ backgroundColor: colour }}>
       <article>
         <h3>{title}</h3>
-        <p>{content}</p>
+        {(() => {
+          const lines = content ? content.split('\n').filter(Boolean) : [];
+          return lines.length > 1
+            ? <ul className="note-list">{lines.map((item, i) => <li key={i}>{item}</li>)}</ul>
+            : <p>{content}</p>;
+        })()}
       </article>
       <span>
         <div className="dropdown">

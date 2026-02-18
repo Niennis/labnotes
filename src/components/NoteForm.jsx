@@ -12,20 +12,20 @@ export const NoteForm = ({ createNewNote, handleModal, isOpen }) => {
     content: '',
     uid: '',
     date: '',
-    colour: 'default'
+    colour: 'default',
+    isListMode: false,
   }
 
   const colourOptions = [
     { value: 'default', color: '#bdd3c0', label: 'Por defecto' },
-    { value: 'nota', color: '#b0b993', label: 'Nota' },
+    { value: 'nota',    color: '#b0b993', label: 'Nota' },
     { value: 'compras', color: '#b3c879', label: 'Compras' },
-    { value: 'tareas', color: '#7f9651', label: 'Tareas' },
+    { value: 'tareas',  color: '#7f9651', label: 'Tareas' },
   ]
 
   const [newNote, setNewNote] = useState(initialStateValues);
   const [user, setUser] = useState('');
 
-  // PROBLEMA 1 CORREGIDO: onAuthStateChanged dentro de useEffect
   useEffect(() => {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -35,26 +35,22 @@ export const NoteForm = ({ createNewNote, handleModal, isOpen }) => {
         setUser(currentUser.uid)
       }
     });
-
     return () => typeof unsubscribe === 'function' && unsubscribe();
   }, []);
 
-  // PROBLEMA 2 CORREGIDO: useCallback con dependencias correctas
   const onChangeHandler = useCallback(
     ({ target: { name, value } }) => {
       setNewNote(state =>
         ({ ...state, [name]: value, uid: user, date: new Date() })
       );
-    }, [user] // user debe estar en las dependencias
+    }, [user]
   );
 
-  // PROBLEMA 3 CORREGIDO: handleSubmit mejorado
   const handleSubmit = () => {
-    createNewNote.createNewNote(newNote)
-    setNewNote({ ...initialStateValues })
+    createNewNote.createNewNote(newNote);
+    setNewNote({ ...initialStateValues });
   }
 
-  // PROBLEMA 5 CORREGIDO: useEffect con dependencia correcta
   useEffect(() => {
     if (!createNewNote.currentId || createNewNote.currentId === '') {
       setNewNote({
@@ -62,14 +58,14 @@ export const NoteForm = ({ createNewNote, handleModal, isOpen }) => {
         content: '',
         uid: user,
         date: '',
-        colour: 'default'
+        colour: 'default',
+        isListMode: false,
       });
     } else {
       getNoteById(createNewNote.currentId);
     }
-  }, [createNewNote.currentId, user]); // Agregar user como dependencia
+  }, [createNewNote.currentId, user]);
 
-  // PROBLEMA 6 CORREGIDO: Manejo de errores en getNoteById
   const getNoteById = async (id) => {
     try {
       const noteRef = await getDoc(doc(db, "notes", id));
@@ -93,15 +89,12 @@ export const NoteForm = ({ createNewNote, handleModal, isOpen }) => {
     setNewNote({ ...initialStateValues, uid: user });
   }
 
-  // PROBLEMA 7 CORREGIDO: Prevenir envío del formulario
   const handleFormSubmit = (e) => {
-    e.preventDefault(); // Prevenir recarga de página
+    e.preventDefault();
     handleSubmit();
   }
 
-  // Función para cerrar modal al hacer clic SOLO en el backdrop
   const handleBackdropClick = (e) => {
-    // Solo cerrar si el clic fue en el contenedor, no en el modal
     if (e.target.classList.contains('create-note-container') ||
       e.target.classList.contains('modal')) {
       handleClose();
@@ -151,10 +144,17 @@ export const NoteForm = ({ createNewNote, handleModal, isOpen }) => {
                     onChange={onChangeHandler}
                     value={newNote.content}
                     name="content"
-                    placeholder='Contenido...'
+                    placeholder={newNote.isListMode ? 'Un ítem por línea...' : 'Contenido...'}
                     rows="4"
-                    required
                   />
+                  <label className="list-mode-label">
+                    <input
+                      type="checkbox"
+                      checked={newNote.isListMode || false}
+                      onChange={() => setNewNote(s => ({ ...s, isListMode: !s.isListMode }))}
+                    />
+                    Mostrar como lista
+                  </label>
                 </div>
                 <div className="colour-picker">
                   {colourOptions.map(({ value, color, label }) => (

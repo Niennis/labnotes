@@ -160,7 +160,7 @@ const Home = ({ user }) => {
                   colour={handleColor({ color: item.colour || 'default' })}
                   editNote={editNote}
                   deleteNote={handleConfirm}
-                  changeTheColor={changeColor} // ← Pasa la función corregida
+                  changeTheColor={changeColor}
                 />)
             })
           }
