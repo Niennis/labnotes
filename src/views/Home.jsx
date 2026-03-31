@@ -105,10 +105,6 @@ const Home = ({ user }) => {
     setCurrentId('')
   }
 
-  const handleId = (id) => {
-    setCurrentId(id)
-  }
-
   const changeColor = async (data) => {
     // data debe contener { id: "abc123", color: "default" }
     const { id, color } = data;

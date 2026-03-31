@@ -64,6 +64,7 @@ export const NoteForm = ({ createNewNote, handleModal, isOpen }) => {
     } else {
       getNoteById(createNewNote.currentId);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [createNewNote.currentId, user]);
 
   const getNoteById = async (id) => {

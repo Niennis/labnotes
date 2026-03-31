@@ -1,17 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getAuth, signOut } from 'firebase/auth';
 
 
 const Navbar = ({ isUser, setUser}) => {
-  const [state, setState] = useState({})
   const navigate = useNavigate();
-
-  useEffect(() => {
-    return () => {
-      setState({})
-    }
-  }, [])
 
   const logout = () => {
     const auth = getAuth();
