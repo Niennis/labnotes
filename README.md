@@ -1,70 +1,54 @@
-# Getting Started with Create React App
+# LabNotes — App de notas y recordatorios 📝
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Aplicación web para crear, organizar y gestionar notas personales. Proyecto desarrollado durante el bootcamp de Laboratoria.
 
-## Available Scripts
+## 🚀 Demo
 
-In the project directory, you can run:
+[Ver aplicación en vivo](https://labnotes-beta.vercel.app)
 
-### `npm start`
+### 🔑 Acceso
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+El ingreso es mediante **autenticación con Google**. No requiere registro previo.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## ✨ Funcionalidades
 
-### `npm test`
+- Crear, editar y eliminar notas
+- Almacenamiento en la nube (datos persistentes entre sesiones)
+- Autenticación con cuenta de Google
+- Interfaz limpia y responsiva
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🛠️ Stack tecnológico
 
-### `npm run build`
+- **Frontend:** React (Create React App)
+- **Base de datos:** Firebase Firestore
+- **Autenticación:** Firebase Auth (Google)
+- **Estilos:** Bootstrap / CSS
+- **Despliegue:** Firebase Hosting
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## ⚙️ Cómo correr localmente
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+# Clonar el repositorio
+git clone https://github.com/Niennis/labnotes.git
+cd labnotes
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# Instalar dependencias
+npm install
 
-### `npm run eject`
+# Correr en modo desarrollo
+npm start
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Abrir [http://localhost:3000](http://localhost:3000) en el navegador.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+> **Nota:** Necesitas configurar un proyecto en Firebase y agregar las credenciales en un archivo `.env.local` para que la autenticación y la base de datos funcionen localmente.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```env
+REACT_APP_FIREBASE_API_KEY=...
+REACT_APP_FIREBASE_AUTH_DOMAIN=...
+REACT_APP_FIREBASE_PROJECT_ID=...
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## 👩‍💻 Desarrollado por
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+[Estefanía Osses Vera](https://github.com/Niennis) — Bootcamp Laboratoria, 2019
