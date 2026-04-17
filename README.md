@@ -10,6 +10,34 @@ Aplicación web para crear, organizar y gestionar notas personales. Proyecto des
 
 El ingreso es mediante **autenticación con Google**. No requiere registro previo.
 
+## 📁 Estructura del proyecto
+
+```
+labnotes/
+├── public/
+│   └── index.html
+└── src/
+    ├── components/
+    │   ├── Confirm.jsx       # Diálogo de confirmación
+    │   ├── Form.jsx
+    │   ├── Modal.jsx
+    │   ├── Navbar.jsx
+    │   ├── Note.jsx          # Tarjeta de nota individual
+    │   └── NoteForm.jsx      # Formulario crear/editar nota
+    ├── views/
+    │   ├── Home.jsx          # Vista principal con listado de notas
+    │   ├── Login.jsx
+    │   └── Register.jsx
+    ├── utils/
+    │   ├── firebase.js       # Inicialización de Firebase
+    │   ├── serviceFirebase.js # Operaciones CRUD con Firestore
+    │   └── theme.js          # Colores disponibles para notas
+    ├── test/
+    │   └── Notes.test.js     # Tests de Note, ConfirmDialog y NoteForm
+    ├── App.js
+    └── App.test.js           # Tests de App (rutas y autenticación)
+```
+
 ## ✨ Funcionalidades
 
 - Crear, editar y eliminar notas
@@ -48,6 +76,23 @@ REACT_APP_FIREBASE_API_KEY=...
 REACT_APP_FIREBASE_AUTH_DOMAIN=...
 REACT_APP_FIREBASE_PROJECT_ID=...
 ```
+
+## 🧪 Tests
+
+El proyecto incluye tests con [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/).
+
+```bash
+npm test
+```
+
+**Cobertura:**
+
+| Archivo | Qué se testea |
+|---|---|
+| `App.test.js` | Renderizado sin errores, vista de login sin sesión, links del navbar |
+| `test/Notes.test.js` | `Note`: título, color de fondo, botones editar/eliminar |
+| | `ConfirmDialog`: visibilidad según prop `open`, callbacks Aceptar/Cancelar |
+| | `NoteForm`: título según modo (nueva/editar), validación del botón Guardar, selector de colores |
 
 ## 👩‍💻 Desarrollado por
 
